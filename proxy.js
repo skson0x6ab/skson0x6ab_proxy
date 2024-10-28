@@ -1,21 +1,20 @@
-const http = require('http');
-const httpProxy = require('http-proxy');
+const express = require('express');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+const app = express();
 
-// 프록시 서버 생성
-const proxy = httpProxy.createProxyServer({});
-
-// HTTP 서버 생성
-const server = http.createServer((req, res) => {
-    // 모든 요청을 프록시 처리
-    if (req.url.startsWith('/page1')) {
-        proxy.web(req, res, { target: 'https://skson-dashboard.vercel.app/#/stock/Stock' });
-    } else if (req.url.startsWith('/page2')) {
-        proxy.web(req, res, { target: 'https://skson-dashboard.vercel.app/#/dashboard' });
-    } else {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('Page not found');
-    }
+// CORS 헤더 추가
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 });
 
-console.log('프록시 서버가 http://localhost:8000 에서 실행 중입니다.');
-server.listen(8000);
+// 프록시 미들웨어 설정
+app.use('/', createProxyMiddleware({
+    target: 'https://skson-dashboard.vercel.app/#/dashboard',
+    changeOrigin: true
+}));
+
+app.listen(5000, () => {
+    console.log('프록시 서버가 http://localhost:5000 에서 실행 중입니다.');
+});
