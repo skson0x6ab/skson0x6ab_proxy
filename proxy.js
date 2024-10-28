@@ -10,10 +10,15 @@ app.use((req, res, next) => {
 });
 
 // 프록시 미들웨어 설정
-app.use('/', createProxyMiddleware({
-    target: 'https://skson-dashboard.vercel.app/#/dashboard',
-    changeOrigin: true
-}));
+app.use('/test1', createProxyMiddleware({
+        target: 'https://skson-dashboard.vercel.app/#/dashboard',
+        changeOrigin: true
+    }));
+
+app.use('/test2', createProxyMiddleware({
+        target: 'https://github.com/skson0x6ab',
+        changeOrigin: true
+    }));
 
 app.listen(5000, () => {
     console.log('프록시 서버가 http://localhost:5000 에서 실행 중입니다.');
