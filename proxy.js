@@ -31,6 +31,8 @@ app.use('/test1', createProxyMiddleware({
     target: 'https://skson-dashboard.vercel.app/',
     changeOrigin: true,
     selfHandleResponse: true,
+    timeout: 60000, // 60초로 설정
+    proxyTimeout: 60000,
     onProxyRes: imageProcessingMiddleware
 }));
 
@@ -39,6 +41,8 @@ app.use('/test2', createProxyMiddleware({
     target: 'https://github.com/skson0x6ab/',
     changeOrigin: true,
     selfHandleResponse: true,
+    timeout: 60000, // 60초로 설정
+    proxyTimeout: 60000,
     onProxyRes: imageProcessingMiddleware
 }));
 
